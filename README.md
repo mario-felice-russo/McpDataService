@@ -68,3 +68,6 @@ Le icone sono servite anche via URL `/assets/...` (es. `/assets/role-admin.svg`)
 - `GET|POST|PUT|DELETE /crud/{dbType}/{table}` operazioni CRUD
 - `GET /api/audit/...` consultazione audit
 
+## Guida client MCP
+- Utilizzo del server MCP da OpenCode e Claude Code: [`GUIDA_CONNESSIONE_CLIENTS`](GUIDA_CONNESSIONE_CLIENTS.md)
+
