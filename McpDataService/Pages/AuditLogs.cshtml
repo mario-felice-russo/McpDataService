@@ -1,0 +1,91 @@
+@page
+@model McpDataService.Pages.AuditLogsModel
+@{
+    ViewData["Title"] = "Audit Logs";
+}
+
+<h1>Audit Logs</h1>
+
+<form method="get" class="mb-3">
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label class="form-label">Da:</label>
+            <input type="datetime-local" name="fromDate" class="form-control" value="@(Model.FromDate?.ToString("yyyy-MM-ddTHH:mm"))" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">A:</label>
+            <input type="datetime-local" name="toDate" class="form-control" value="@(Model.ToDate?.ToString("yyyy-MM-ddTHH:mm"))" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Endpoint:</label>
+            <input type="text" name="endpoint" class="form-control" placeholder="/db/SqlServer" value="@Model.Endpoint" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Tipo Utente:</label>
+            <select name="userType" class="form-select">
+                <option value="" selected="@(string.IsNullOrWhiteSpace(Model.UserType))">Tutti</option>
+                <option value="AdminUi" selected="@(Model.UserType == "AdminUi")">Admin UI</option>
+                <option value="ApiClient" selected="@(Model.UserType == "ApiClient")">API Client</option>
+                <option value="MCPClient" selected="@(Model.UserType == "MCPClient")">MCP Client</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Tipo DB:</label>
+            <select name="dbType" class="form-select">
+                <option value="" selected="@(string.IsNullOrWhiteSpace(Model.DbType))">Tutti</option>
+                <option value="SqlServer" selected="@(Model.DbType == "SqlServer")">SQL Server</option>
+                <option value="Oracle" selected="@(Model.DbType == "Oracle")">Oracle</option>
+                <option value="SQLite" selected="@(Model.DbType == "SQLite")">SQLite</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">MCP:</label>
+            <select name="isMcpRequest" class="form-select">
+                <option value="" selected="@(Model.IsMcpRequest == null)">Tutti</option>
+                <option value="true" selected="@(Model.IsMcpRequest == true)">Solo MCP</option>
+                <option value="false" selected="@(Model.IsMcpRequest == false)">Non MCP</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Operatore filtri:</label>
+            <select name="filterOperator" class="form-select">
+                <option value="AND" selected="@(Model.FilterOperator == "AND")">AND</option>
+                <option value="OR" selected="@(Model.FilterOperator == "OR")">OR</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Righe pagina:</label>
+            <input type="number" min="1" max="200" class="form-control" name="pageSize" value="@Model.PageSize" />
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filtra</button>
+        </div>
+    </div>
+</form>
+
+<partial name="_AuditLogsTable" model="Model.Requests" />
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="mt-3">
+        <ul class="pagination flex-wrap">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link"
+                       asp-page="/AuditLogs"
+                       asp-route-page="@i"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-fromDate="@(Model.FromDate?.ToString("yyyy-MM-ddTHH:mm"))"
+                       asp-route-toDate="@(Model.ToDate?.ToString("yyyy-MM-ddTHH:mm"))"
+                       asp-route-endpoint="@Model.Endpoint"
+                       asp-route-userType="@Model.UserType"
+                       asp-route-dbType="@Model.DbType"
+                       asp-route-isMcpRequest="@Model.IsMcpRequest"
+                       asp-route-filterOperator="@Model.FilterOperator">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+}

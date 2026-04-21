@@ -1,0 +1,41 @@
+@page
+@model McpDataService.Pages.SetupAdminModel
+@{
+    ViewData["Title"] = "Setup Admin";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Configurazione iniziale account amministratore</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Imposta le credenziali amministrative per accedere a Configurazione, Log e Audit.</p>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">@Model.ErrorMessage</div>
+                }
+
+                <form method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username</label>
+                        <input asp-for="Username" class="form-control" autocomplete="username" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" />
+                        <small class="text-muted">Minimo 10 caratteri.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label">Conferma password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" autocomplete="new-password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Salva e accedi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

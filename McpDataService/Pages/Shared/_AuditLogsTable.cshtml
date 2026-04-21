@@ -1,0 +1,44 @@
+@model List<McpDataService.Models.Audit.AuditRequest>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Timestamp</th>
+            <th>Endpoint</th>
+            <th>Metodo</th>
+            <th>Tipo Utente</th>
+            <th>DB</th>
+            <th>Status</th>
+            <th>Tempo (ms)</th>
+            <th>MCP?</th>
+            <th>Azioni</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null || !Model.Any())
+        {
+            <tr>
+                <td colspan="9" class="text-center">Nessun log trovato</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var request in Model)
+            {
+                <tr>
+                    <td>@request.Timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@request.Endpoint</td>
+                    <td>@request.HttpMethod</td>
+                    <td>@request.UserType</td>
+                    <td>@request.DbType</td>
+                    <td>@request.ResponseStatus</td>
+                    <td>@request.ExecutionTimeMs</td>
+                    <td>@(request.IsMcpRequest ? "Si" : "No")</td>
+                    <td>
+                        <a asp-page="/AuditLogDetail" asp-route-id="@request.Id" class="btn btn-sm btn-info">Dettagli</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

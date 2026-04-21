@@ -1,0 +1,138 @@
+@page
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero-panel mb-4">
+    <img src="~/images/mcp-logo.png" alt="MCP Data Service Logo" class="hero-logo" />
+    <div>
+        <h1 class="display-6 mb-1">MCP Data Service</h1>
+        <p class="lead mb-2">Gateway MCP professionale per accesso multi-database (SQL Server, Oracle, SQLite).</p>
+        <p class="mb-0 text-muted">Controllo connessioni, audit, logging e endpoint API in un'unica piattaforma.</p>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">Guida rapida endpoint <code>/mcp</code></h5>
+    </div>
+    <div class="card-body">
+        <p class="mb-2">
+            Invia richieste JSON-RPC 2.0 con <strong>POST</strong> su <code>/mcp</code> e includi sempre gli header
+            <code>X-MCP-Application</code> e <code>X-MCP-Key</code>.
+        </p>
+        <p class="text-muted mb-3">
+            Usa <code>db_type</code> valorizzato con <code>SqlServer</code>, <code>Oracle</code> o <code>SQLite</code>.
+        </p>
+        <p class="mb-2">Metodi metadati disponibili:</p>
+        <ul class="small text-muted">
+            <li><code>db_get_tables</code>, <code>db_get_columns</code>, <code>db_get_schema</code></li>
+            <li><code>db_get_views</code>, <code>db_get_stored_procedures</code>, <code>db_get_triggers</code></li>
+            <li><code>db_get_indexes</code>, <code>db_get_packages</code>, <code>db_get_schemas</code></li>
+        </ul>
+
+        <div class="row g-3">
+            <div class="col-lg-4">
+                <h6 class="fw-semibold">1) Elenco tabelle</h6>
+                <pre class="p-3 bg-dark text-light rounded small mb-0"><code>{
+  "jsonrpc": "2.0",
+  "id": "req-1",
+  "method": "db_get_tables",
+  "params": {
+    "db_type": "SqlServer"
+  }
+}</code></pre>
+            </div>
+            <div class="col-lg-4">
+                <h6 class="fw-semibold">2) Metadati avanzati (view/procedure)</h6>
+                <pre class="p-3 bg-dark text-light rounded small mb-0"><code>{
+  "jsonrpc": "2.0",
+  "id": "req-2",
+  "method": "db_get_views",
+  "params": {
+    "db_type": "Oracle"
+  }
+}</code></pre>
+            </div>
+            <div class="col-lg-4">
+                <h6 class="fw-semibold">3) Lettura dati filtrata</h6>
+                <pre class="p-3 bg-dark text-light rounded small mb-0"><code>{
+  "jsonrpc": "2.0",
+  "id": "req-3",
+  "method": "db_read",
+  "params": {
+    "db_type": "SQLite",
+    "table": "Orders",
+    "where": "Status = 'OPEN'"
+  }
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Schema DB</h5>
+                <p class="card-text">Endpoint: <code>/db/{dbType}/schema</code></p>
+                <p class="card-text text-muted">Richiede header <code>X-MCP-Application</code> + <code>X-MCP-Key</code></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">CRUD Operazioni</h5>
+                <p class="card-text">Endpoint: <code>/crud/{dbType}/{table}</code></p>
+                <p class="card-text text-muted">Richiede header <code>X-MCP-Application</code> + <code>X-MCP-Key</code></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Protocollo MCP</h5>
+                <p class="card-text">Endpoint: <code>/mcp</code></p>
+                <p class="card-text text-muted">Compatibile JSON-RPC 2.0</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Configurazione</h5>
+                <p class="card-text text-muted">Gestisci chiavi, connessioni e stato tray icon</p>
+                <a asp-page="/Config" class="btn btn-sm btn-primary">Configura</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Swagger UI</h5>
+                <a href="/swagger" class="btn btn-primary" target="_blank" rel="noopener">Documentazione API</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Log Applicativi</h5>
+                <a asp-page="/Logs" class="btn btn-primary">Visualizza Log</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Audit Log</h5>
+                <a asp-page="/AuditLogs" class="btn btn-primary">Visualizza Audit</a>
+            </div>
+        </div>
+    </div>
+</div>

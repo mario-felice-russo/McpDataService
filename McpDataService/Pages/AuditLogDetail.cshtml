@@ -1,0 +1,91 @@
+@page "{id:guid}"
+@model McpDataService.Pages.AuditLogDetailModel
+@{
+    ViewData["Title"] = "Dettaglio Audit Log";
+}
+
+<h1>Dettaglio Richiesta</h1>
+
+<div class="card mb-3">
+    <div class="card-header"><h5>Metadati</h5></div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">ID:</dt>
+            <dd class="col-sm-10">@Model.Request.Id</dd>
+
+            <dt class="col-sm-2">Timestamp:</dt>
+            <dd class="col-sm-10">@Model.Request.Timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</dd>
+
+            <dt class="col-sm-2">Endpoint:</dt>
+            <dd class="col-sm-10">@Model.Request.Endpoint</dd>
+
+            <dt class="col-sm-2">Metodo HTTP:</dt>
+            <dd class="col-sm-10">@Model.Request.HttpMethod</dd>
+
+            <dt class="col-sm-2">Tipo Utente:</dt>
+            <dd class="col-sm-10">@Model.Request.UserType</dd>
+
+            <dt class="col-sm-2">Utente:</dt>
+            <dd class="col-sm-10">@Model.Request.UserIdentifier</dd>
+
+            <dt class="col-sm-2">Tipo DB:</dt>
+            <dd class="col-sm-10">@Model.Request.DbType</dd>
+
+            <dt class="col-sm-2">IP:</dt>
+            <dd class="col-sm-10">@Model.Request.IpAddress</dd>
+
+            <dt class="col-sm-2">Tempo Esecuzione:</dt>
+            <dd class="col-sm-10">@Model.Request.ExecutionTimeMs ms</dd>
+
+            <dt class="col-sm-2">Status:</dt>
+            <dd class="col-sm-10">@Model.Request.ResponseStatus</dd>
+
+            <dt class="col-sm-2">MCP:</dt>
+            <dd class="col-sm-10">@(Model.Request.IsMcpRequest ? "Si" : "No")</dd>
+        </dl>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.RequestHeaders))
+{
+    <div class="card mb-3">
+        <div class="card-header"><h5>Headers Richiesta</h5></div>
+        <div class="card-body"><pre>@Model.RequestHeaders</pre></div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.RequestBody))
+{
+    <div class="card mb-3">
+        <div class="card-header"><h5>Body Richiesta</h5></div>
+        <div class="card-body"><pre>@Model.RequestBody</pre></div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.ResponseBody))
+{
+    <div class="card mb-3">
+        <div class="card-header"><h5>Body Risposta</h5></div>
+        <div class="card-body"><pre>@Model.ResponseBody</pre></div>
+    </div>
+}
+
+@if (Model.Parameters.Any())
+{
+    <div class="card">
+        <div class="card-header"><h5>Parametri</h5></div>
+        <div class="card-body">
+            <table class="table">
+                <thead><tr><th>Chiave</th><th>Valore</th></tr></thead>
+                <tbody>
+                    @foreach (var param in Model.Parameters)
+                    {
+                        <tr><td>@param.Key</td><td>@param.Value</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<a asp-page="/AuditLogs" class="btn btn-secondary mt-3">Torna ai Log</a>

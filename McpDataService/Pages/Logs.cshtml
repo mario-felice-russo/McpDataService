@@ -1,0 +1,43 @@
+@page
+@model McpDataService.Pages.LogsModel
+@{
+    ViewData["Title"] = "Log Applicativi";
+}
+
+<h1>Log Applicativi</h1>
+
+<div id="logs-container">
+    @if (Model.LogFiles.Any())
+    {
+        @foreach (var log in Model.LogFiles)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>@log.FileName</h5>
+                    <small class="text-muted">@log.LastModified.ToString("yyyy-MM-dd HH:mm:ss") - @log.Size bytes</small>
+                </div>
+                <div class="card-body">
+                    <pre style="max-height: 300px; overflow-y: scroll;">@log.Content</pre>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">Nessun file di log trovato</p>
+    }
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-page="/Logs" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
